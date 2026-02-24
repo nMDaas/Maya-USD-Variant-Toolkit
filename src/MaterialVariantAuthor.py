@@ -44,7 +44,7 @@ class MaterialVariantAuthor(VariantAuthoringTool):
     def setupUserInterface(self, ui):
         super().setupUserInterface(ui)
 
-        # Check if the targetPrim already has a variant of this type (usd_file)
+        # Check if the targetPrim already has a variant of this type (material)
         exists, existing_vsets = self.find_authoring_variant_sets("material")
         remove_widget = ui.findChild(QPushButton, "vs_remove")
         if exists:
