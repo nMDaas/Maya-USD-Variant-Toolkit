@@ -32,10 +32,13 @@ class GeoVariantAuthor(VariantAuthoringTool):
 
         # Dictionary to store where usd files for geometry will be stored
         self.usd_filepath_dict = {} # stores [row, filepath]
+        self.geo_dict = {} # stores [row, geo]
 
         # icon paths
         self.open_folder_icon = Path(__file__).parent / "icons" / "open-folder.png"
         self.folder_chosen_icon  = Path(__file__).parent / "icons" / "open-folder-confirmed.png"
+        self.pin_icon = Path(__file__).parent / "icons" / "pin.png"
+        self.pinned_icon  = Path(__file__).parent / "icons" / "pin-confirmed.png"
 
     # UI FUNCTIONS -------------------------------------------------------------------------
 
@@ -70,7 +73,13 @@ class GeoVariantAuthor(VariantAuthoringTool):
         # Create widgets
         label = QLabel(f"Variant: ")
         variant_name_line_edit = QLineEdit()
+        setButton = QPushButton()
         folderButton = QPushButton()
+
+        # Setting setButton settings
+        setButton.setIcon(QIcon(str(self.pin_icon)))
+        setButton.setIconSize(QSize(22,22))
+        setButton.setFlat(True)
 
         # Setting folderButton settings
         folderButton.setIcon(QIcon(str(self.open_folder_icon)))
@@ -90,9 +99,18 @@ class GeoVariantAuthor(VariantAuthoringTool):
         # Add to the grid layout in new row
         ui.gridLayout.addWidget(label, rowIndex, 0)
         ui.gridLayout.addWidget(variant_name_line_edit, rowIndex, 1)    
-        ui.gridLayout.addWidget(folderButton, rowIndex, 2)   
+        ui.gridLayout.addWidget(setButton, rowIndex, 2)   
+        ui.gridLayout.addWidget(folderButton, rowIndex, 3)   
 
+        setButton.clicked.connect(lambda checked=False, r=rowIndex: self.setGeo(r))
         folderButton.clicked.connect(lambda checked=False, r=rowIndex: self.showDialogForUSDFileSelection(ui, r))  
+
+    # Set which geo is connected to the row for variant creation
+    def setGeo(self, row_number):
+        selection = cmds.ls(selection=True, long=True)
+        targetGeo_long = selection[0]
+        targetGeo = targetGeo_long.split("|")[-1]
+        self.geo_dict[row_number] = targetGeo
 
     # open dialog for user to select USD file - linked to row number
     def showDialogForUSDFileSelection(self, ui, row_number):
@@ -141,7 +159,8 @@ class GeoVariantAuthor(VariantAuthoringTool):
             if v_name_input_widget:
                 v_name_input = v_name_input_widget.text().strip() # strip white spaces just in case
                 file_selected = self.usd_filepath_dict[i]
-                self.createVariant(vset, v_name_input, file_selected)
+                targetGeo = self.geo_dict[i]
+                self.createVariant(vset, v_name_input, targetGeo, file_selected)
 
         # set default variant as the first variant, only if the variant set is new
         if self.creatingNewVariant:
@@ -150,7 +169,7 @@ class GeoVariantAuthor(VariantAuthoringTool):
             vset.SetVariantSelection(v_name_input_1)
 
     # Creates a singular variant for a set
-    def createVariant(self, vset, variant_name, file_selected):
+    def createVariant(self, vset, variant_name, targetGeo, file_selected):
         """
         vset.AddVariant(variant_name)
 
@@ -163,5 +182,5 @@ class GeoVariantAuthor(VariantAuthoringTool):
             attr.Set("usd_file")
         """
         
-        print(f"Variant '{variant_name}' authored with reference to: {file_selected}")
+        print(f"Variant '{variant_name}' authored with {targetGeo} at: {file_selected}")
 
