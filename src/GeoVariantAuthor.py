@@ -30,11 +30,12 @@ class GeoVariantAuthor(VariantAuthoringTool):
     def __init__(self, _tool_name):
         super().__init__(_tool_name)
 
+        # Dictionary to store where usd files for geometry will be stored
         self.usd_filepath_dict = {} # stores [row, filepath]
 
         # icon paths
-        self.pin_icon = Path(__file__).parent / "icons" / "pin.png"
-        self.pinned_icon  = Path(__file__).parent / "icons" / "pin-confirmed.png"
+        self.open_folder_icon = Path(__file__).parent / "icons" / "open-folder.png"
+        self.folder_chosen_icon  = Path(__file__).parent / "icons" / "open-folder-confirmed.png"
 
     # UI FUNCTIONS -------------------------------------------------------------------------
 
@@ -69,6 +70,12 @@ class GeoVariantAuthor(VariantAuthoringTool):
         # Create widgets
         label = QLabel(f"Variant: ")
         variant_name_line_edit = QLineEdit()
+        folderButton = QPushButton()
+
+        # Setting folderButton settings
+        folderButton.setIcon(QIcon(str(self.open_folder_icon)))
+        folderButton.setIconSize(QSize(22,22))
+        folderButton.setFlat(True)
 
         # Get new row index
         rowIndex = ui.gridLayout.rowCount()
@@ -78,13 +85,51 @@ class GeoVariantAuthor(VariantAuthoringTool):
 
         # Setting object names
         variant_name_line_edit.setObjectName(f"variant_input_{rowIndex}")
+        folderButton.setObjectName(f"select_button_{rowIndex}")
 
         # Add to the grid layout in new row
         ui.gridLayout.addWidget(label, rowIndex, 0)
         ui.gridLayout.addWidget(variant_name_line_edit, rowIndex, 1)    
+        ui.gridLayout.addWidget(folderButton, rowIndex, 2)   
+
+        folderButton.clicked.connect(lambda checked=False, r=rowIndex: self.showDialogForUSDFileSelection(ui, r))  
+
+    # open dialog for user to select USD file - linked to row number
+    def showDialogForUSDFileSelection(self, ui, row_number):
+        if self.settings.value("defaultDirectory") is None:
+            self.settings.setValue(
+                "defaultDirectory",
+                cmds.workspace(query=True, rootDirectory=True)
+            )
+
+        initial_directory = self.settings.value("defaultDirectory")
+        select_button = ui.findChild(QPushButton, f"select_button_{row_number}")
+
+        file_selected, _ = QFileDialog.getSaveFileName(
+            ui,
+            "Save As USD File",
+            initial_directory,
+            "USD Files (*.usd *.usda *.usdc)"
+        )
+
+        if file_selected:
+            # Ensure extension exists (optional but recommended)
+            if not file_selected.lower().endswith((".usd", ".usda", ".usdc")):
+                file_selected += ".usd"
+
+            self.settings.setValue(
+                "defaultDirectory",
+                str(Path(file_selected).parent)
+            )
+
+            self.usd_filepath_dict[row_number] = file_selected
+            select_button.setIcon(QIcon(str(self.folder_chosen_icon)))
+        else:
+            select_button.setIcon(QIcon(str(self.open_folder_icon)))
 
     # VARIANT AUTHORING SPECIFIC FUNCTIONS -------------------------------------------------------
 
+    # Creates all the variants for the set
     def createVariantsForSet(self, ui, vset):
         # Iterate through all num_variants
         # num_variants = ui.gridLayout.rowCount() - 1
@@ -104,9 +149,9 @@ class GeoVariantAuthor(VariantAuthoringTool):
             v_name_input_1 = v_name_input_widget_1.text().strip() 
             vset.SetVariantSelection(v_name_input_1)
 
-    #TODO: warning if file has not been selected
-    #TODO: There should be error checking for if the variant_name already exists for the vset
+    # Creates a singular variant for a set
     def createVariant(self, vset, variant_name, file_selected):
+        """
         vset.AddVariant(variant_name)
 
         vset.SetVariantSelection(variant_name)
@@ -116,6 +161,7 @@ class GeoVariantAuthor(VariantAuthoringTool):
             self.targetPrim.GetReferences().AddReference(file_selected)
             attr = self.targetPrim.CreateAttribute("variant_set_pipeline_tag", Sdf.ValueTypeNames.String)
             attr.Set("usd_file")
+        """
         
         print(f"Variant '{variant_name}' authored with reference to: {file_selected}")
 

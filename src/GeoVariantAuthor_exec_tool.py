@@ -19,4 +19,4 @@ if 'src.VariantAuthoringToolWrapper' in sys.modules:
     del sys.modules['src.VariantAuthoringToolWrapper']
 import src.VariantAuthoringToolWrapper
 
-window = src.VariantAuthoringToolWrapper.executeMaterialVariantAuthor()
+window = src.VariantAuthoringToolWrapper.executeGeoVariantAuthor()
