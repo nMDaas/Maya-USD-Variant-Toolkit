@@ -60,37 +60,51 @@ class GeoVariantAuthor(VariantAuthoringTool):
         remove_widget = ui.findChild(QPushButton, "vs_remove")
         if exists:
             self.creatingNewVariant = False
-            self.handle_vs_selection_change(ui, existing_vsets[0].GetName())
+            self.handle_vs_selection_change(ui, existing_vsets[0].GetName()) # populate
             if (remove_widget):
                 remove_widget.show() 
         else:
             remove_widget.hide() 
 
+        # Populate selected objects into rows
+        selected_objects = cmds.ls(selection=True, long=True)
+        for obj in selected_objects:
+            self.add_variant_row(ui, obj)
+
         ui.final_button.setText("Create Variants")
         ui.final_button.clicked.connect(partial(self.apply, ui))
         
 
-    def add_variant_row(self, ui):
+    def add_variant_row(self, ui, targetGeo_long=None):
         # Create widgets
         label = QLabel(f"Variant: ")
         variant_name_line_edit = QLineEdit()
+
         setButton = QPushButton()
         folderButton = QPushButton()
 
+        # Get new row index
+        rowIndex = ui.gridLayout.rowCount()
+
         # Setting setButton settings
-        setButton.setIcon(QIcon(str(self.pin_icon)))
         setButton.setIconSize(QSize(22,22))
         setButton.setFlat(True)
+        # Populate names automatically if targetGeos selected
+        if targetGeo_long is not None:
+            variantName = targetGeo_long.split("|")[-1]
+            variant_name_line_edit.setText(variantName)
+            setButton.setIcon(QIcon(str(self.pinned_icon)))
+            # Add obj to dictionary
+            self.geo_dict[rowIndex] = targetGeo_long
+        else:
+            setButton.setIcon(QIcon(str(self.pin_icon))) 
 
         # Setting folderButton settings
         folderButton.setIcon(QIcon(str(self.open_folder_icon)))
         folderButton.setIconSize(QSize(22,22))
         folderButton.setFlat(True)
 
-        # Get new row index
-        rowIndex = ui.gridLayout.rowCount()
-
-        if (rowIndex == 1):
+        if (rowIndex == 1 and targetGeo_long is None):
             variant_name_line_edit.setText("Default")
 
         # Setting object names
