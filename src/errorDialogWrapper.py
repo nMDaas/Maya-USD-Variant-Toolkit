@@ -23,12 +23,6 @@ my_script_dir = "/Users/natashadaas/USD_Switchboard/src"
 if my_script_dir not in sys.path:
     sys.path.append(my_script_dir)
 
-from VariantAuthoringTool import VariantAuthoringTool
-from UsdFileVariantAuthor import UsdFileVariantAuthor
-from TransformVariantAuthor import TransformVariantAuthor
-from MaterialVariantAuthor import MaterialVariantAuthor
-from GeoVariantAuthor import GeoVariantAuthor
-
 def one_undo(func):
     """
     Decorator - guarantee close chunk.
@@ -46,9 +40,9 @@ def one_undo(func):
     return wrap
         
 #show gui window
-def showWindow(tool):
+def showWindow(errorTitle, errorMessage):
     # get this files location so we can find the .ui file in the /ui/ folder alongside it
-    UI_FILE = str(Path(__file__).parent.resolve() / "gui.ui")
+    UI_FILE = str(Path(__file__).parent.resolve() / "error_gui.ui")
     loader = QUiLoader()
     file = QFile(UI_FILE)
     file.open(QFile.ReadOnly)
@@ -67,38 +61,29 @@ def showWindow(tool):
     global folder_path
     folder_path = ''
 
-    # tool specific set up
-    successful = tool.setupUserInterface(ui)
+    # Add warning image
+    warning_icon = Path(__file__).parent / "icons" / "warning.png"
+    warningLabel = ui.warning_image
+    pix = QPixmap(warning_icon)
+    scaled_pix = pix.scaled(
+        45, 45,                 
+        Qt.KeepAspectRatio,      
+        Qt.SmoothTransformation  
+    )
+    warningLabel.setPixmap(scaled_pix)
+    warningLabel.setScaledContents(False)
 
-    # Runs only if tool setup was successful
-    if successful is not False:
-        def add_variant_row():
-            tool.add_variant_row(ui)
+    # Add warning message
+    ui.error_message.setText(errorMessage)
 
-        #connect buttons to functions
-        ui.addVariantButton.clicked.connect(add_variant_row)
-        
-        # show the QT ui
-        ui.show()
-        return ui
+    ui.setWindowTitle(errorTitle)
+    ui.setObjectName(errorMessage)    
 
-def executeUsdFileVariantAuthor():
-    tool = UsdFileVariantAuthor("Create Variants From USD Files")
-    window=showWindow(tool)
+    # show the QT ui
+    ui.show()
+    return ui
 
-def executeTransformVariantAuthor():
-    tool = TransformVariantAuthor("Create Transform Variant On Target Prim")
-    window=showWindow(tool)
-
-def executeMaterialVariantAuthor():
-    tool = MaterialVariantAuthor("Create Material Variants On Target Prim")
-    window=showWindow(tool)
-
-def executeGeoVariantAuthor():
-    tool = GeoVariantAuthor("Create Geo Variants on Target Prim")
-    window=showWindow(tool)
-
-if __name__ == "__main__":
-    executeWrapper()
+def createErrorDialogWindow(errorTitle, errorMessage):
+    window=showWindow(errorTitle, errorMessage)
 
    

@@ -53,18 +53,23 @@ class GeoVariantAuthor(VariantAuthoringTool):
         ui.close()
 
     def setupUserInterface(self, ui):
-        super().setupUserInterface(ui)
+        successful = super().setupUserInterface(ui)
 
-        # Check if the targetPrim already has a variant of this type (geo)
-        exists, existing_vsets = self.find_authoring_variant_sets("geo")
-        remove_widget = ui.findChild(QPushButton, "vs_remove")
-        if exists:
-            self.creatingNewVariant = False
-            self.handle_vs_selection_change(ui, existing_vsets[0].GetName()) # populate
-            if (remove_widget):
-                remove_widget.show() 
+        if successful is False:
+            return False
         else:
-            remove_widget.hide() 
+            # Check if the targetPrim already has a variant of this type (geo)
+            exists, existing_vsets = self.find_authoring_variant_sets("geo")
+            remove_widget = ui.findChild(QPushButton, "vs_remove")
+            if exists:
+                self.creatingNewVariant = False
+                self.handle_vs_selection_change(ui, existing_vsets[0].GetName()) # populate
+                if (remove_widget):
+                    remove_widget.show() 
+            else:
+                remove_widget.hide() 
+
+            return False
 
         # Populate selected objects into rows
         selected_objects = cmds.ls(selection=True, long=True)
