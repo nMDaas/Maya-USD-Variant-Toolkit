@@ -1,0 +1,8 @@
+# Ignore all Python bytecode caches
+__pycache__/
+**/__pycache__/
+
+# Ignore .DS_Store
+.DS_Store
+**/.DS_Store
+
