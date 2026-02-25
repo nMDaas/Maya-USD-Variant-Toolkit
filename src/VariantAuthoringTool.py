@@ -73,6 +73,8 @@ class VariantAuthoringTool(ABC):
         ui.vs_remove.setIconSize(QSize(22,22))
         ui.vs_remove.setFlat(True)
         ui.vs_remove.clicked.connect(lambda checked=False: self.deleteVariant(ui))
+        ui.vs_remove.setToolTip("Delete Variant Set")
+        ui.vs_remove.setCursor(Qt.PointingHandCursor)
 
         return True
 
@@ -129,6 +131,8 @@ class VariantAuthoringTool(ABC):
         removeButton.setIcon(QIcon(str(self.remove_icon)))
         removeButton.setIconSize(QSize(22,22))
         removeButton.setFlat(True)
+        removeButton.setToolTip("Delete Variant")
+        removeButton.setCursor(Qt.PointingHandCursor)
         
         # Get new row index
         rowIndex = ui.gridLayout.rowCount()

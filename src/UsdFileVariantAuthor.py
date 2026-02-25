@@ -84,6 +84,8 @@ class UsdFileVariantAuthor(VariantAuthoringTool):
         folderButton.setIcon(QIcon(str(self.open_folder_icon)))
         folderButton.setIconSize(QSize(22,22))
         folderButton.setFlat(True)
+        folderButton.setToolTip("Select USD file")
+        folderButton.setCursor(Qt.PointingHandCursor)
 
         # Get new row index
         rowIndex = ui.gridLayout.rowCount()
@@ -121,6 +123,7 @@ class UsdFileVariantAuthor(VariantAuthoringTool):
             self.settings.setValue("defaultDirectory",  str(Path(file_selected).parent))
             self.usd_filepath_dict[row_number] = file_selected
             select_button.setIcon(QIcon(str(self.folder_chosen_icon)))
+            select_button.setToolTip(file_selected)
         else:
             select_button.setIcon(QIcon(str(self.open_folder_icon))) 
 

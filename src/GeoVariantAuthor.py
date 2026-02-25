@@ -69,15 +69,15 @@ class GeoVariantAuthor(VariantAuthoringTool):
             else:
                 remove_widget.hide() 
 
-            return False
+            # Populate selected objects into rows
+            selected_objects = cmds.ls(selection=True, long=True)
+            for obj in selected_objects:
+                self.add_variant_row(ui, obj)
 
-        # Populate selected objects into rows
-        selected_objects = cmds.ls(selection=True, long=True)
-        for obj in selected_objects:
-            self.add_variant_row(ui, obj)
+            ui.final_button.setText("Create Variants")
+            ui.final_button.clicked.connect(partial(self.apply, ui))
 
-        ui.final_button.setText("Create Variants")
-        ui.final_button.clicked.connect(partial(self.apply, ui))
+            return True
         
 
     def add_variant_row(self, ui, targetGeo_long=None):
@@ -101,13 +101,18 @@ class GeoVariantAuthor(VariantAuthoringTool):
             setButton.setIcon(QIcon(str(self.pinned_icon)))
             # Add obj to dictionary
             self.geo_dict[rowIndex] = targetGeo_long
+            setButton.setToolTip(targetGeo_long)
         else:
             setButton.setIcon(QIcon(str(self.pin_icon))) 
+            setButton.setToolTip("Set Object Geo For Variant")
+            setButton.setCursor(Qt.PointingHandCursor)
 
         # Setting folderButton settings
         folderButton.setIcon(QIcon(str(self.open_folder_icon)))
         folderButton.setIconSize(QSize(22,22))
         folderButton.setFlat(True)
+        folderButton.setToolTip("Save USD file")
+        folderButton.setCursor(Qt.PointingHandCursor)
 
         if (rowIndex == 1 and targetGeo_long is None):
             variant_name_line_edit.setText("Default")
@@ -135,6 +140,7 @@ class GeoVariantAuthor(VariantAuthoringTool):
         # if successful, change pinned icon
         set_button = ui.findChild(QPushButton, f"set_button_{row_number}")
         set_button.setIcon(QIcon(str(self.pinned_icon)))
+        set_button.setToolTip(targetGeo_long)
 
     # open dialog for user to select USD file - linked to row number
     def showDialogForUSDFileSelection(self, ui, row_number):
@@ -166,6 +172,7 @@ class GeoVariantAuthor(VariantAuthoringTool):
 
             self.usd_filepath_dict[row_number] = file_selected
             select_button.setIcon(QIcon(str(self.folder_chosen_icon)))
+            select_button.setToolTip(file_selected)
         else:
             select_button.setIcon(QIcon(str(self.open_folder_icon)))
 

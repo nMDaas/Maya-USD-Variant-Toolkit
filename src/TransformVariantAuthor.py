@@ -98,6 +98,8 @@ class TransformVariantAuthor(VariantAuthoringTool):
         setButton.setIcon(QIcon(str(self.pin_icon)))
         setButton.setIconSize(QSize(22,22))
         setButton.setFlat(True)
+        setButton.setToolTip("Set Xform For Transform Variant")
+        setButton.setCursor(Qt.PointingHandCursor)
 
         # Get new row index
         rowIndex = ui.gridLayout.rowCount()
@@ -135,6 +137,7 @@ class TransformVariantAuthor(VariantAuthoringTool):
         # if successful, change pinned icon
         set_button = ui.findChild(QPushButton, f"set_button_{row_number}")
         set_button.setIcon(QIcon(str(self.pinned_icon)))
+        set_button.setToolTip("Xform Transform Applied To Variant")
 
         # set as read only
         v_name_input_widget.setReadOnly(True)

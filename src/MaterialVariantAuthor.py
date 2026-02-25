@@ -73,6 +73,8 @@ class MaterialVariantAuthor(VariantAuthoringTool):
         setButton.setIcon(QIcon(str(self.pin_icon)))
         setButton.setIconSize(QSize(22,22))
         setButton.setFlat(True)
+        setButton.setToolTip("Set Xform For Material Variant")
+        setButton.setCursor(Qt.PointingHandCursor)
 
         # Get new row index
         rowIndex = ui.gridLayout.rowCount()
@@ -111,6 +113,7 @@ class MaterialVariantAuthor(VariantAuthoringTool):
         # if successful, change pinned icon
         set_button = ui.findChild(QPushButton, f"set_button_{row_number}")
         set_button.setIcon(QIcon(str(self.pinned_icon)))
+        set_button.setToolTip(material_path.pathString)
 
         # set as read only
         v_name_input_widget.setReadOnly(True)
