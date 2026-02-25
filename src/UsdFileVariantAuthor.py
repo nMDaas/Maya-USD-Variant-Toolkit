@@ -46,21 +46,26 @@ class UsdFileVariantAuthor(VariantAuthoringTool):
         ui.close()
 
     def setupUserInterface(self, ui):
-        super().setupUserInterface(ui)
+        successful = super().setupUserInterface(ui)
 
-        # Check if the targetPrim already has a variant of this type (usd_file)
-        exists, existing_vsets = self.find_authoring_variant_sets("usd_file")
-        remove_widget = ui.findChild(QPushButton, "vs_remove")
-        if exists:
-            self.creatingNewVariant = False
-            self.handle_vs_selection_change(ui, existing_vsets[0].GetName())
-            if (remove_widget):
-                remove_widget.show() 
+        if successful is False:
+            return False
         else:
-            remove_widget.hide() 
+            # Check if the targetPrim already has a variant of this type (usd_file)
+            exists, existing_vsets = self.find_authoring_variant_sets("usd_file")
+            remove_widget = ui.findChild(QPushButton, "vs_remove")
+            if exists:
+                self.creatingNewVariant = False
+                self.handle_vs_selection_change(ui, existing_vsets[0].GetName())
+                if (remove_widget):
+                    remove_widget.show() 
+            else:
+                remove_widget.hide() 
 
-        ui.final_button.setText("Create Variants")
-        ui.final_button.clicked.connect(partial(self.apply, ui))
+            ui.final_button.setText("Create Variants")
+            ui.final_button.clicked.connect(partial(self.apply, ui))
+
+            return True
 
     def open_folder(self, ui, row_number):
         print(f"Opening folder for row: {row_number}")

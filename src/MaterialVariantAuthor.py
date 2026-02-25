@@ -42,21 +42,26 @@ class MaterialVariantAuthor(VariantAuthoringTool):
         ui.close()
 
     def setupUserInterface(self, ui):
-        super().setupUserInterface(ui)
+        successful = super().setupUserInterface(ui)
 
-        # Check if the targetPrim already has a variant of this type (usd_file)
-        exists, existing_vsets = self.find_authoring_variant_sets("material")
-        remove_widget = ui.findChild(QPushButton, "vs_remove")
-        if exists:
-            self.creatingNewVariant = False
-            self.handle_vs_selection_change(ui, existing_vsets[0].GetName())
-            if (remove_widget):
-                remove_widget.show() 
+        if successful is False:
+            return False
         else:
-            remove_widget.hide() 
+            # Check if the targetPrim already has a variant of this type (material)
+            exists, existing_vsets = self.find_authoring_variant_sets("material")
+            remove_widget = ui.findChild(QPushButton, "vs_remove")
+            if exists:
+                self.creatingNewVariant = False
+                self.handle_vs_selection_change(ui, existing_vsets[0].GetName())
+                if (remove_widget):
+                    remove_widget.show() 
+            else:
+                remove_widget.hide() 
 
-        ui.final_button.setText("Close")
-        ui.final_button.clicked.connect(partial(self.close, ui))
+            ui.final_button.setText("Close")
+            ui.final_button.clicked.connect(partial(self.close, ui))
+
+            return True
 
     def add_variant_row(self, ui):
         # Create widgets
@@ -64,7 +69,7 @@ class MaterialVariantAuthor(VariantAuthoringTool):
         variant_name_line_edit = QLineEdit()
         setButton = QPushButton()
 
-        # Setting folderButton settings
+        # Setting setButton settings
         setButton.setIcon(QIcon(str(self.pin_icon)))
         setButton.setIconSize(QSize(22,22))
         setButton.setFlat(True)

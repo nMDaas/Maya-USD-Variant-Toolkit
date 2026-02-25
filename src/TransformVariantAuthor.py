@@ -41,27 +41,32 @@ class TransformVariantAuthor(VariantAuthoringTool):
         ui.close()
 
     def setupUserInterface(self, ui):
-        super().setupUserInterface(ui)
+        successful = super().setupUserInterface(ui)
 
-        # add radio buttons
-        exists, existing_vsets = self.find_authoring_variant_sets("transform")
-        newVariantOptionButton = QRadioButton("Create New Variant")
-        ui.gridLayout_vs_options.addWidget(newVariantOptionButton, 0, 0)
-        newVariantOptionButton.setEnabled(True)
-        newVariantOptionButton.setChecked(True)
-        newVariantOptionButton.clicked.connect(partial(self.setupUserInterface_NewVariant, ui))
-        if exists: # only if existing variant sets of type "transform" on targetPrim
-            existingVariantOptionButton = QRadioButton("Edit Existing Variant")
-            ui.gridLayout_vs_options.addWidget(existingVariantOptionButton, 0, 1)  
-            existingVariantOptionButton.setEnabled(True)
-            existingVariantOptionButton.clicked.connect(partial(self.setupUserInterface_ExistingVariant, ui))
-       
-        remove_widget = ui.findChild(QPushButton, "vs_remove")
-        if (remove_widget):
-            remove_widget.hide() 
+        if successful is False:
+            return False
+        else:
+            # add radio buttons
+            exists, existing_vsets = self.find_authoring_variant_sets("transform")
+            newVariantOptionButton = QRadioButton("Create New Variant")
+            ui.gridLayout_vs_options.addWidget(newVariantOptionButton, 0, 0)
+            newVariantOptionButton.setEnabled(True)
+            newVariantOptionButton.setChecked(True)
+            newVariantOptionButton.clicked.connect(partial(self.setupUserInterface_NewVariant, ui))
+            if exists: # only if existing variant sets of type "transform" on targetPrim
+                existingVariantOptionButton = QRadioButton("Edit Existing Variant")
+                ui.gridLayout_vs_options.addWidget(existingVariantOptionButton, 0, 1)  
+                existingVariantOptionButton.setEnabled(True)
+                existingVariantOptionButton.clicked.connect(partial(self.setupUserInterface_ExistingVariant, ui))
+        
+            remove_widget = ui.findChild(QPushButton, "vs_remove")
+            if (remove_widget):
+                remove_widget.hide() 
 
-        ui.final_button.setText("Close")
-        ui.final_button.clicked.connect(partial(self.close, ui))
+            ui.final_button.setText("Close")
+            ui.final_button.clicked.connect(partial(self.close, ui))
+
+            return True
 
     def setupUserInterface_ExistingVariant(self, ui):
         # Check if the targetPrim already has a variant of this type (transform)
