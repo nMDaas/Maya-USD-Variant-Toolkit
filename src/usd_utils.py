@@ -19,9 +19,7 @@ def get_selected_usd_xform_prim():
     # Get the current UFE (Universal Front End) selection made by user in outliner
     selection = ufe.GlobalSelection.get()
 
-    # TODO: Error should be generated if nothing was selected
     if selection.empty():
-        print("Nothing selected.")
         return None
     
     # Get last item in the selection
@@ -36,7 +34,6 @@ def get_selected_usd_xform_prim():
     
     # Ensure prim is an Xform
     if (not prim.IsA(UsdGeom.Xform)):
-        #TODO: Error should be generated if XForm was not selected
-        print("XForm prim must be selected for variant set creation.")
+        return None
 
     return prim
