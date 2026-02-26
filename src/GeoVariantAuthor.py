@@ -268,7 +268,6 @@ class GeoVariantAuthor(VariantAuthoringTool):
         cmds.select(targetGeo_long)
 
         # Execute the export
-        # TODO: Check if something is selected by the user and raise a warning if not
         cmds.file(export_path, force=True, options=opts, type="USD Export", preserveReferences=True, exportSelected=True)
 
     def apply_pipeline_tag(self, variant_set_name):
