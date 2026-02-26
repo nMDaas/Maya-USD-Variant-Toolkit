@@ -66,7 +66,7 @@ def showWindow(errorTitle, errorMessage):
     warningLabel = ui.warning_image
     pix = QPixmap(warning_icon)
     scaled_pix = pix.scaled(
-        45, 45,                 
+        80, 80,                 
         Qt.KeepAspectRatio,      
         Qt.SmoothTransformation  
     )
