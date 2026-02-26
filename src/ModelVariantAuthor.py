@@ -43,14 +43,14 @@ class ModelVariantAuthor(VariantAuthoringTool):
     # UI FUNCTIONS -------------------------------------------------------------------------
 
     def apply(self, ui):
-        variant_set_name = ui.vs_name_input.text()
-        vset = self.createVariantSet(variant_set_name)
-        
-        ret = self.createVariantsForSet(ui, vset)
+        ret, vset = self.createVariantSet(ui)
 
         if ret is True:
-            self.apply_pipeline_tag(variant_set_name, "geo")
-            ui.close()
+            ret2 = self.createVariantsForSet(ui, vset)
+
+            if ret2 is True:
+                self.apply_pipeline_tag(ui, "geo")
+                ui.close()
 
     def setupUserInterface(self, ui):
         successful = super().setupUserInterface(ui)

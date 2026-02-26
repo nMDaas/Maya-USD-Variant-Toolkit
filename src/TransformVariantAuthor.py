@@ -141,34 +141,36 @@ class TransformVariantAuthor(VariantAuthoringTool):
     # set XForm transform as variant for that row - linked to row number
     def setTransformVariant(self, ui, row_number):
         # create set
-        variant_set_name = ui.vs_name_input.text()
-        vset = self.createVariantSet(variant_set_name)
+        ret, vset = self.createVariantSet(ui)
 
-        # create transformation variant for set
-        v_name_input_widget = ui.findChild(QLineEdit, f"variant_input_{row_number}")
-        v_name_input = v_name_input_widget.text().strip()
+        if ret is True:
+            # create transformation variant for set
+            v_name_input_widget = ui.findChild(QLineEdit, f"variant_input_{row_number}")
+            v_name_input = v_name_input_widget.text().strip()
 
-        if (not v_name_input):
-            ui.error_label.setText(f"Variant name not set")
-            ui.error_label.show()
+            if (not v_name_input):
+                ui.error_label.setText(f"Variant name not set")
+                ui.error_label.show()
+                return False
+            
+            self.createATransformationVariantSet(self.targetPrim, vset, v_name_input)
+
+            self.apply_permanent_order()
+            self.apply_pipeline_tag(ui, "transform")
+
+            # if successful, change pinned icon
+            set_button = ui.findChild(QPushButton, f"set_button_{row_number}")
+            set_button.setIcon(QIcon(str(self.pinned_icon)))
+            set_button.setToolTip("ERROR: Xform Transform Applied To Variant")
+            set_button.setEnabled(False)
+
+            # set as read only
+            v_name_input_widget.setReadOnly(True)
+
+            ui.error_label.hide()
+            return True
+        else:
             return False
-        
-        self.createATransformationVariantSet(self.targetPrim, vset, v_name_input)
-
-        self.apply_permanent_order()
-        self.apply_pipeline_tag(variant_set_name, "transform")
-
-        # if successful, change pinned icon
-        set_button = ui.findChild(QPushButton, f"set_button_{row_number}")
-        set_button.setIcon(QIcon(str(self.pinned_icon)))
-        set_button.setToolTip("ERROR: Xform Transform Applied To Variant")
-        set_button.setEnabled(False)
-
-        # set as read only
-        v_name_input_widget.setReadOnly(True)
-
-        ui.error_label.hide()
-        return True
 
     def createATransformationVariantSet(self, targetPrim, vset, variant_name):
         # Get the manual overrides currently on the prim

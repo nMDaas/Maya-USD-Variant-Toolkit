@@ -102,35 +102,37 @@ class MaterialVariantAuthor(VariantAuthoringTool):
     # set XForm material variant for that row - linked to row number
     def setMaterialVariantSet(self, ui, row_number):
         # create set
-        variant_set_name = ui.vs_name_input.text()
-        vset = self.createVariantSet(variant_set_name)
-        material_path = self.get_material_path()
+        ret, vset = self.createVariantSet(ui)
+        if ret is True:
+            material_path = self.get_material_path()
 
-        # create transformation variant for set
-        v_name_input_widget = ui.findChild(QLineEdit, f"variant_input_{row_number}")
-        v_name_input = v_name_input_widget.text().strip()
+            # create transformation variant for set
+            v_name_input_widget = ui.findChild(QLineEdit, f"variant_input_{row_number}")
+            v_name_input = v_name_input_widget.text().strip()
 
-        if (not v_name_input):
-            ui.error_label.setText(f"ERROR: Variant name not set")
-            ui.error_label.show()
+            if (not v_name_input):
+                ui.error_label.setText(f"ERROR: Variant name not set")
+                ui.error_label.show()
+                return False
+
+            self.createAMaterialVariant(vset, v_name_input, material_path)
+
+            self.reset_binding()
+            self.apply_pipeline_tag(ui, "material")
+
+            # if successful, change pinned icon
+            set_button = ui.findChild(QPushButton, f"set_button_{row_number}")
+            set_button.setIcon(QIcon(str(self.pinned_icon)))
+            set_button.setToolTip(material_path.pathString)
+            set_button.setEnabled(False)
+
+            # set as read only
+            v_name_input_widget.setReadOnly(True)
+
+            ui.error_label.hide()
+            return True
+        else:
             return False
-
-        self.createAMaterialVariant(vset, v_name_input, material_path)
-
-        self.reset_binding()
-        self.apply_pipeline_tag(variant_set_name, "material")
-
-        # if successful, change pinned icon
-        set_button = ui.findChild(QPushButton, f"set_button_{row_number}")
-        set_button.setIcon(QIcon(str(self.pinned_icon)))
-        set_button.setToolTip(material_path.pathString)
-        set_button.setEnabled(False)
-
-        # set as read only
-        v_name_input_widget.setReadOnly(True)
-
-        ui.error_label.hide()
-        return True
 
     def get_material_path(self):
         binding_api = UsdShade.MaterialBindingAPI(self.targetPrim)

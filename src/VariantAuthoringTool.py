@@ -219,9 +219,17 @@ class VariantAuthoringTool(ABC):
         self.handle_vs_selection_change(ui, vs_name)
     
     # Creates a variant set of a given name for a given XForm
-    def createVariantSet(self, in_vset_name):
-        vset = self.targetPrim.GetVariantSets().AddVariantSet(in_vset_name)
-        return vset
+    def createVariantSet(self, ui):
+        variant_set_name = ui.vs_name_input.text()
+
+        if not variant_set_name:
+            ui.error_label.setText(f"ERROR: Variant set name is empty.")
+            ui.error_label.show()
+            return False, None
+
+        vset = self.targetPrim.GetVariantSets().AddVariantSet(variant_set_name)
+        ui.error_label.hide()
+        return True, vset
     
     def deleteVariantSet(self, ui):
         # Get variant set
@@ -249,7 +257,8 @@ class VariantAuthoringTool(ABC):
 
         self.manage_delete_variant_set(ui)
 
-    def apply_pipeline_tag(self, variant_set_name, tag_name):
+    def apply_pipeline_tag(self, ui, tag_name):
+        variant_set_name = ui.vs_name_input.text()
         vset = self.targetPrim.GetVariantSet(variant_set_name)
         attr = self.targetPrim.GetAttribute("variant_set_pipeline_tag")
         variant_names = vset.GetVariantNames()

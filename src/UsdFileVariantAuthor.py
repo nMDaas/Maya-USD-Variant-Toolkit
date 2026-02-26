@@ -39,12 +39,12 @@ class UsdFileVariantAuthor(VariantAuthoringTool):
     # UI FUNCTIONS -------------------------------------------------------------------------
 
     def apply(self, ui):
-        variant_set_name = ui.vs_name_input.text()
-        vset = self.createVariantSet(variant_set_name)
-        
-        ret = self.createVariantsForSet(ui, vset)
+        ret, vset = self.createVariantSet(ui)
+
         if ret is True:
-            ui.close()
+            ret2 = self.createVariantsForSet(ui, vset)
+            if ret2 is True:
+                ui.close()
 
     def setupUserInterface(self, ui):
         successful = super().setupUserInterface(ui)
