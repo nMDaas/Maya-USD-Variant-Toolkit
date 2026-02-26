@@ -255,7 +255,7 @@ class ModelVariantAuthor(VariantAuthoringTool):
             f"exportComponentTags={exportComponentTags};"
             f"defaultMeshScheme={defaultMeshScheme};"
             f"animation={animation};"
-            f"defaultUSDFormat=usda;"
+            f"defaultUSDFormat=usd;"
             f"rootPrim={targetGeo};"
             f"rootPrimType=scope;"
             f"exportMaterials=0;"
