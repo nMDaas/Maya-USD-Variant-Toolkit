@@ -138,7 +138,7 @@ class TransformVariantAuthor(VariantAuthoringTool):
         self.createATransformationVariantSet(self.targetPrim, vset, v_name_input)
 
         self.apply_permanent_order()
-        self.apply_pipeline_tag(variant_set_name)
+        self.apply_pipeline_tag(variant_set_name, "transform")
 
         # if successful, change pinned icon
         set_button = ui.findChild(QPushButton, f"set_button_{row_number}")
@@ -200,27 +200,7 @@ class TransformVariantAuthor(VariantAuthoringTool):
 
                 xformable.SetXformOpOrder([tOp, rOp, sOp])
                 
-            print(f"Authored xformOpOrder to layer: {target_layer.identifier}")
-
-    def apply_pipeline_tag(self, variant_set_name):
-        vset = self.targetPrim.GetVariantSet(variant_set_name)
-        attr = self.targetPrim.GetAttribute("variant_set_pipeline_tag")
-        variant_names = vset.GetVariantNames()
-
-        stage = self.targetPrim.GetStage()
-        target_layer = stage.GetRootLayer()
-
-        for var_name in variant_names:
-            vset.SetVariantSelection(var_name)
-
-            with vset.GetVariantEditContext(target_layer):
-                attr = self.targetPrim.GetAttribute("variant_set_pipeline_tag")
-
-                if (attr):
-                    attr.Set("transform")
-                else:
-                    attr = self.targetPrim.CreateAttribute("variant_set_pipeline_tag", Sdf.ValueTypeNames.String)
-                    attr.Set("transform")    
+            print(f"Authored xformOpOrder to layer: {target_layer.identifier}")   
             
 
     
