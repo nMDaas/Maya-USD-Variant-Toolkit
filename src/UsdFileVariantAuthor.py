@@ -42,8 +42,9 @@ class UsdFileVariantAuthor(VariantAuthoringTool):
         variant_set_name = ui.vs_name_input.text()
         vset = self.createVariantSet(variant_set_name)
         
-        self.createVariantsForSet(ui, vset)
-        ui.close()
+        ret = self.createVariantsForSet(ui, vset)
+        if ret is True:
+            ui.close()
 
     def setupUserInterface(self, ui):
         successful = super().setupUserInterface(ui)
@@ -61,6 +62,9 @@ class UsdFileVariantAuthor(VariantAuthoringTool):
                     remove_widget.show() 
             else:
                 remove_widget.hide() 
+
+            # Hide error label
+            ui.error_label.hide()
 
             ui.final_button.setText("Create Variants")
             ui.final_button.clicked.connect(partial(self.apply, ui))
@@ -137,8 +141,15 @@ class UsdFileVariantAuthor(VariantAuthoringTool):
             # This works because when populating existing variants, I didn't give it object names
             if v_name_input_widget:
                 v_name_input = v_name_input_widget.text().strip() # strip white spaces just in case
-                file_selected = self.usd_filepath_dict[i]
-                self.createVariant(vset, v_name_input, file_selected)
+                
+                # check if variant name not entered or USD file not selected
+                if (not v_name_input) or (i not in self.usd_filepath_dict):
+                    ui.error_label.setText(f"Variant name or USD File not set")
+                    ui.error_label.show()
+                    return False
+                else:
+                    file_selected = self.usd_filepath_dict[i]
+                    self.createVariant(vset, v_name_input, file_selected)
 
         # set default variant as the first variant, only if the variant set is new
         if self.creatingNewVariant:
@@ -146,7 +157,8 @@ class UsdFileVariantAuthor(VariantAuthoringTool):
             v_name_input_1 = v_name_input_widget_1.text().strip() 
             vset.SetVariantSelection(v_name_input_1)
 
-    #TODO: warning if file has not been selected
+        return True
+
     def createVariant(self, vset, variant_name, file_selected):
         vset.AddVariant(variant_name)
 
