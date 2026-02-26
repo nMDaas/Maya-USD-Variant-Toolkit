@@ -1,22 +1,38 @@
 ## USD Variant Authoring Tools for Maya
 In progress!
 
-### Variant Authoring Tools
+### Variant Authoring Management Tools
 <table>
-  <tr valign="middle">
-    <td>
-      <img src="https://github.com/nMDaas/USD_Switchboard/blob/main/icons/UsdFileVariant_AIcon.png" width="50px">
-    </td>
-    <td>
-      Author Variants From USD Files
-    </td>
-  </tr>
   <tr valign="middle">
     <td>
       <img src="https://github.com/nMDaas/USD_Switchboard/blob/main/icons/TransformVariant_AIcon.png" width="50px">
     </td>
     <td>
-      Author Transform Variants
+      Transform Variant Manager
+    </td>
+  </tr>
+  <tr valign="middle">
+    <td>
+      <img src="https://github.com/nMDaas/USD_Switchboard/blob/main/icons/MaterialVariant_AIcon.png" width="50px">
+    </td>
+    <td>
+      Material Variant Manager
+    </td>
+  </tr>
+  <tr valign="middle">
+    <td>
+      <img src="https://github.com/nMDaas/USD_Switchboard/blob/main/icons/ModelVariant_AIcon.png" width="50px">
+    </td>
+    <td>
+      Modeling Variant Manager
+    </td>
+  </tr>
+  <tr valign="middle">
+    <td>
+      <img src="https://github.com/nMDaas/USD_Switchboard/blob/main/icons/UsdFileVariant_AIcon.png" width="50px">
+    </td>
+    <td>
+      USD File Variant Manager
     </td>
   </tr>
 </table>
