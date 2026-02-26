@@ -27,7 +27,7 @@ from VariantAuthoringTool import VariantAuthoringTool
 from UsdFileVariantAuthor import UsdFileVariantAuthor
 from TransformVariantAuthor import TransformVariantAuthor
 from MaterialVariantAuthor import MaterialVariantAuthor
-from GeoVariantAuthor import GeoVariantAuthor
+from ModelVariantAuthor import ModelVariantAuthor
 
 def one_undo(func):
     """
@@ -83,19 +83,19 @@ def showWindow(tool):
         return ui
 
 def executeUsdFileVariantAuthor():
-    tool = UsdFileVariantAuthor("Create Variants From USD Files")
+    tool = UsdFileVariantAuthor("Manage USD File Variants on Target Prim")
     window=showWindow(tool)
 
 def executeTransformVariantAuthor():
-    tool = TransformVariantAuthor("Create Transform Variant On Target Prim")
+    tool = TransformVariantAuthor("Manage Transform Variant On Target Prim")
     window=showWindow(tool)
 
 def executeMaterialVariantAuthor():
-    tool = MaterialVariantAuthor("Create Material Variants On Target Prim")
+    tool = MaterialVariantAuthor("Manage Material Variants On Target Prim")
     window=showWindow(tool)
 
-def executeGeoVariantAuthor():
-    tool = GeoVariantAuthor("Create Geo Variants on Target Prim")
+def executeModelVariantAuthor():
+    tool = ModelVariantAuthor("Manage Modeling Variants on Target Prim")
     window=showWindow(tool)
 
 if __name__ == "__main__":

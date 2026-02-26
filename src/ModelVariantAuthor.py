@@ -25,7 +25,7 @@ from VariantAuthoringTool import VariantAuthoringTool
 
 # ------------------------------------------------------------------------------------------
 
-class GeoVariantAuthor(VariantAuthoringTool):
+class ModelVariantAuthor(VariantAuthoringTool):
 
     def __init__(self, _tool_name):
         super().__init__(_tool_name)
