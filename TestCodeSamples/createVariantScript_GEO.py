@@ -4,9 +4,9 @@ if my_script_dir not in sys.path:
     sys.path.append(my_script_dir)
 
 # Imports
-import ExportBaseMeshAsUSD
-import CreateGeoVariantFromUSDFile
-import DuplicateAsMayaData
+import TestCodeSamples.ExportBaseMeshAsUSD as ExportBaseMeshAsUSD
+import TestCodeSamples.CreateGeoVariantFromUSDFile as CreateGeoVariantFromUSDFile
+import TestCodeSamples.DuplicateAsMayaData as DuplicateAsMayaData
 
 """
 -------------------------------------------------------------------------------
