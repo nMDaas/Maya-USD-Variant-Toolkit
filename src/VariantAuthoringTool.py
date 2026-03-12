@@ -43,6 +43,10 @@ class VariantAuthoringTool(ABC):
         # icon paths
         self.remove_icon  = Path(__file__).parent / "icons" / "remove.png"
 
+        self.screen = QApplication.primaryScreen().geometry()
+        self.width = self.screen.width()
+        self.height = self.screen.height()
+
     # GETTERS ------------------------------------------------------------------------------
 
     def getToolName(self):
