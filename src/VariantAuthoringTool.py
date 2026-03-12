@@ -74,7 +74,7 @@ class VariantAuthoringTool(ABC):
 
         # Set the icon for the variant set remove button
         ui.vs_remove.setIcon(QIcon(str(self.remove_icon)))
-        ui.vs_remove.setIconSize(QSize(22,22))
+        ui.vs_remove.setIconSize(QSize(self.width*0.025, self.height*0.025))
         ui.vs_remove.setFlat(True)
         ui.vs_remove.clicked.connect(lambda checked=False: self.deleteVariantSet(ui))
         ui.vs_remove.setToolTip("Delete Variant Set")
@@ -133,7 +133,7 @@ class VariantAuthoringTool(ABC):
 
         # Setting removeButton settings
         removeButton.setIcon(QIcon(str(self.remove_icon)))
-        removeButton.setIconSize(QSize(22,22))
+        ui.vs_remove.setIconSize(QSize(self.width*0.025, self.height*0.025))
         removeButton.setFlat(True)
         removeButton.setToolTip("Delete Variant")
         removeButton.setCursor(Qt.PointingHandCursor)

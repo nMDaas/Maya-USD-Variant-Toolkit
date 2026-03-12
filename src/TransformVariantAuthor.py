@@ -117,7 +117,7 @@ class TransformVariantAuthor(VariantAuthoringTool):
         setButton.setFlat(True)
         setButton.setToolTip("Set Xform For Transform Variant")
         setButton.setCursor(Qt.PointingHandCursor)
-        setButton.setIconSize(QSize(self.width*0.015, self.height*0.015))
+        setButton.setIconSize(QSize(self.width*0.02, self.height*0.02))
 
         # Get new row index
         rowIndex = ui.gridLayout.rowCount()
