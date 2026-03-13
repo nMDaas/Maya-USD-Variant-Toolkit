@@ -36,6 +36,14 @@ class USDVariantSwitchboardTool():
         #TODO: If no switches, should say that
 
         ui.addSwitchButton.clicked.connect(partial(self.createNewSwitch, ui))
+        ui.addVariantButton.clicked.connect(partial(self.add_switch_row, ui))
+
+    # GETTERS ------------------------------------------------------------------------------
+
+    def getToolName(self):
+        return self.tool_name
+    
+    # UI FUNCTIONS -------------------------------------------------------------------------
 
     def createNewSwitch(self, ui):
         # show options to create a new switch
@@ -46,7 +54,19 @@ class USDVariantSwitchboardTool():
         # hide '+ Variant Combination' button
         ui.addSwitchButton.hide()
 
-    # GETTERS ------------------------------------------------------------------------------
+    # add dropdown to choose from valid variant options
+    def add_switch_row(self, ui):
+        # Create widget
+        dropdown = QComboBox()
+        options = ["Model A", "Model B (Legacy)", "Model C", "Experimental"]
+        dropdown.addItems(options)
 
-    def getToolName(self):
-        return self.tool_name
+        # disable invalid options
+        item = dropdown.model().item(2)
+        item.setFlags(item.flags() & ~Qt.ItemIsEnabled)
+
+        # add it to the grid layout
+        rowIndex = ui.gridLayout_newSwitch.rowCount()
+        ui.gridLayout_newSwitch.addWidget(dropdown, rowIndex, 0)
+
+    
