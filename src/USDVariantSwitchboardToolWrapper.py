@@ -1,7 +1,3 @@
-# Details
-
-# Instructions: to run, navigate to execute_tool.py and run the file
-
 from PySide6.QtCore import * 
 from PySide6.QtGui import *
 from PySide6.QtUiTools import *
@@ -23,11 +19,7 @@ my_script_dir = "/Users/natashadaas/USD_Switchboard/src"
 if my_script_dir not in sys.path:
     sys.path.append(my_script_dir)
 
-from VariantAuthoringTool import VariantAuthoringTool
-from UsdFileVariantAuthor import UsdFileVariantAuthor
-from TransformVariantAuthor import TransformVariantAuthor
-from MaterialVariantAuthor import MaterialVariantAuthor
-from ModelVariantAuthor import ModelVariantAuthor
+from USDVariantSwitchboardTool import USDVariantSwitchboardTool
 
 def one_undo(func):
     """
@@ -48,7 +40,7 @@ def one_undo(func):
 #show gui window
 def showWindow(tool):
     # get this files location so we can find the .ui file in the /ui/ folder alongside it
-    UI_FILE = str(Path(__file__).parent.resolve() / "variant_authoring_gui.ui")
+    UI_FILE = str(Path(__file__).parent.resolve() / "switchboard_gui.ui")
     loader = QUiLoader()
     file = QFile(UI_FILE)
     file.open(QFile.ReadOnly)
@@ -82,20 +74,8 @@ def showWindow(tool):
         ui.show()
         return ui
 
-def executeUsdFileVariantAuthor():
-    tool = UsdFileVariantAuthor("Manage USD File Variants on Target Prim")
-    window=showWindow(tool)
-
-def executeTransformVariantAuthor():
-    tool = TransformVariantAuthor("Manage Transform Variants On Target Prim")
-    window=showWindow(tool)
-
-def executeMaterialVariantAuthor():
-    tool = MaterialVariantAuthor("Manage Material Variants On Target Prim")
-    window=showWindow(tool)
-
-def executeModelVariantAuthor():
-    tool = ModelVariantAuthor("Manage Modeling Variants on Target Prim")
+def executeVariantSwitchboardTool():
+    tool = USDVariantSwitchboardTool("USD Variant Switchboard")
     window=showWindow(tool)
 
 if __name__ == "__main__":

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>Dialog</class>
+    <widget class="QDialog" name="Dialog">
+
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>480</width>
+                <height>280</height>
+            </rect>
+        </property>
+
+        <property name="windowTitle">
+            <string>Dialog</string>
+        </property>
+
+        <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+                <widget class="QLabel" name="targetPrim">
+                    <property name="geometry">
+                        <rect>
+                            <x>30</x>
+                            <y>10</y>
+                            <width>300</width>
+                            <height>32</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Target Prim: </string>
+                    </property>
+                </widget>
+            </item>
+
+            <item>
+                <widget class="QWidget" name="gridLayout_vs_container">
+                    <property name="geometry">
+                        <rect>
+                            <x>30</x>
+                            <y>22</y>
+                            <width>400</width>
+                            <height>50</height> </rect>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_vs_options">
+                    </layout>
+                </widget>
+            </item>
+
+            <item>
+                <widget class="QWidget" name="gridLayout_vs_container">
+                    <property name="geometry">
+                        <rect>
+                            <x>30</x>
+                            <y>47</y>
+                            <width>400</width>
+                            <height>50</height> </rect>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_vs">
+                        <item row="0" column="0">
+                            <widget class="QLabel" name="label"><property name="text"><string>Variant Set Name:</string></property></widget>
+                        </item>
+                        <item row="0" column="1">
+                            <widget class="QLineEdit" name="vs_name_input"></widget>
+                        </item>
+                        <item row="0" column="2">
+                            <widget class="QPushButton" name="vs_remove"></widget>
+                        </item>
+                        
+                    </layout>
+                </widget>
+            </item>
+
+            <item>
+                <widget class="QScrollArea" name="scrollArea">
+                    <property name="geometry">
+                        <rect>
+                            <x>30</x>
+                            <y>90</y>
+                            <width>400</width>
+                            <height>130</height> </rect>
+                    </property>
+                    <property name="widgetResizable">
+                        <bool>true</bool> </property>
+
+                    <widget class="QWidget" name="scrollAreaWidgetContents">
+                        <layout class="QGridLayout" name="gridLayout">
+                            <item row="0" column="0">
+                                <widget class="QPushButton" name="addVariantButton">
+                                    <property name="text">
+                                        <string> + Variant </string>
+                                    </property>
+                                    <property name="flat">
+                                        <bool>true</bool>
+                                    </property>
+                                    <property name="styleSheet">
+                                        <string>
+                                            QPushButton {
+                                                border: 1px dashed #999;
+                                                padding: 6px;
+                                            }
+                                            QPushButton:hover {
+                                                border-color: #666;
+                                            }
+                                        </string>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>
+                    </widget>
+                </widget>
+            </item>
+
+            <item>
+                <widget class="QLabel" name="error_label">
+                    <property name="text">
+                        <string></string>
+                    </property>
+                    <property name="styleSheet">
+                        <string>color: red; font-style: italic;</string>
+                    </property>
+                </widget>
+            </item>
+        
+            <item>
+                <widget class="QPushButton" name="final_button">
+                    <property name="text">
+                        <string>Apply</string>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+
+    </widget>
+
+    <resources/>
+    <connections/>
+</ui>

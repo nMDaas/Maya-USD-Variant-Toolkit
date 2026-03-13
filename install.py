@@ -18,7 +18,7 @@ for icon in os.listdir(icon_folder):
     shutil.copy2(os.path.join(icon_folder, icon), maya_icon_folder)
 
 # Create a shelf if it doesn't exist --------------------------------------------------------------
-shelf_name = "NatashaUSDTools"
+shelf_name = "Maya_USD_Variant_Toolkit"
 if not cmds.shelfLayout(shelf_name, exists=True):
     cmds.shelfLayout(shelf_name, parent="ShelfLayout")
 
@@ -133,6 +133,33 @@ tool.run()
     sourceType="Python"
 )
 
-print("✅ NatashaUSDTools installed!")
+# Add button USDSwitchboard_exec_tool.py ----------------------------------------------------
+import UsdVariantSwitchboard_exec_tool # your main script
+
+# Remove button if it exists
+buttons = cmds.shelfLayout(shelf_name, q=True, ca=True) or []
+for btn in buttons:
+    if cmds.shelfButton(btn, q=True, label=True) == "USDVariantSwitchboard":
+        cmds.deleteUI(btn)
+
+cmds.shelfButton(
+    parent=shelf_name,
+    label="USDVariantSwitchboard",
+    imageOverlayLabel="",
+    image="VariantSwitchboard_AIcon.png",
+    command=f'''
+import sys
+tool_root = r"{tool_root}"
+if tool_root not in sys.path:
+    sys.path.append(tool_root)
+
+import src.UsdVariantSwitchboard_exec_tool as tool
+tool.run()
+''',
+    annotation="USD Variant Switchboard",
+    sourceType="Python"
+)
+
+print("✅ Maya_USD_Variant_Toolkit")
 
 
