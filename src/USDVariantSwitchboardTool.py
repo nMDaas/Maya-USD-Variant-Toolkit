@@ -27,6 +27,29 @@ class USDVariantSwitchboardTool():
         self.switches = [] # refers to existing variant combinations
         self.discovered_data = {}
 
+        self.stage_variants = {} # self.stage_variants[prim] = (variant_set_name, [option1, option2, ...])
+        self.stage_prims = [] # loaded from stage_variants
+
+        # Load stage_variants
+        proxy_nodes = cmds.ls(type="mayaUsdProxyShape")
+        if proxy_nodes:
+            stage = self.get_usd_stage(proxy_nodes[0])
+            if stage:
+                self.get_all_stage_variants(stage)
+                import pprint
+        else:
+            print("No mayaUsdProxyShape found.")
+
+        # Load stage_prims
+        self.get_stage_prims()
+
+    # GETTERS ------------------------------------------------------------------------------
+
+    def getToolName(self):
+        return self.tool_name
+    
+    # UI FUNCTIONS -------------------------------------------------------------------------
+
     def setupUserInterface(self, ui):
         ui.setWindowTitle(self.getToolName())
         ui.setObjectName(self.getToolName())
@@ -39,13 +62,6 @@ class USDVariantSwitchboardTool():
 
         ui.addSwitchButton.clicked.connect(partial(self.createNewSwitch, ui))
         ui.addVariantButton.clicked.connect(partial(self.add_switch_row, ui))
-
-    # GETTERS ------------------------------------------------------------------------------
-
-    def getToolName(self):
-        return self.tool_name
-    
-    # UI FUNCTIONS -------------------------------------------------------------------------
 
     def createNewSwitch(self, ui):
         # show options to create a new switch
@@ -60,38 +76,22 @@ class USDVariantSwitchboardTool():
     def add_switch_row(self, ui):
         # Create widget
         dropdown = QComboBox()
-        options = ["Model A", "Model B (Legacy)", "Model C", "Experimental"]
+        options = self.stage_prims
         dropdown.addItems(options)
-
-        # disable invalid options
-        item = dropdown.model().item(2)
-        item.setFlags(item.flags() & ~Qt.ItemIsEnabled)
 
         # add it to the grid layout
         rowIndex = ui.gridLayout_newSwitch.rowCount()
         ui.gridLayout_newSwitch.addWidget(dropdown, rowIndex, 0)
 
-        proxy_nodes = cmds.ls(type="mayaUsdProxyShape")
-
-        if proxy_nodes:
-            stage = self.get_usd_stage(proxy_nodes[0])
-            if stage:
-                variants = self.get_all_variants(stage)
-                import pprint
-                pprint.pprint(variants)
-        else:
-            print("No mayaUsdProxyShape found.")
-
-
+    def get_stage_prims(self):
+        self.stage_prims = []
+        for prim_name, vset_list in  self.stage_variants.items():
+            self.stage_prims.append(prim_name)
 
     # VARIANT SWITCHBOARD SPECIFIC FUNCTIONS -------------------------------------------------------
 
+    # TODO: Move this to utilities
     def get_usd_stage(self, proxy_node):
-        """
-        Retrieves the USD Stage without relying on ufe.PathString.
-        This uses the mayaUsdLib to get the prim from the Maya node, 
-        then grabs the stage from that prim.
-        """
         # Ensure we have the shape node, not the transform
         shape = cmds.listRelatives(proxy_node, shapes=True, fullPath=True)
         target = shape[0] if shape else proxy_node
@@ -105,24 +105,31 @@ class USDVariantSwitchboardTool():
             return None
 
     # Gets all variants that are active in the outliner
-    def get_all_variants(self, stage):
-        scene_variants = {}
-        if not stage: return scene_variants
+    def get_all_stage_variants(self, stage):
+        self.stage_variants = {}
 
         for prim in stage.Traverse():
             vsets = prim.GetVariantSets()
             vset_names = vsets.GetNames()
             
+            # Only process if the prim has variant sets
             if vset_names:
-                p_path = str(prim.GetPath())
-                scene_variants[p_path] = {}
+                prim_name = prim.GetName()
+                
+                # self.stage_variants[prim] = (variant_set_name, [option1, option2, ...])
+                variant_data = []
+                
                 for vset_name in vset_names:
                     vset = vsets.GetVariantSet(vset_name)
-                    scene_variants[p_path][vset_name] = {
-                        "options": vset.GetVariantNames(),
-                        "current_selection": vset.GetVariantSelection()
-                    }
-        return scene_variants
+                    options = vset.GetVariantNames()
+                    
+                    variant_data.append({
+                        "vset_name": vset_name,
+                        "variants": options,
+                    })
+                
+                self.stage_variants[prim_name] = variant_data
+                
         
 
   
