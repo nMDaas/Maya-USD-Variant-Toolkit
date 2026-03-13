@@ -99,11 +99,29 @@
                         <bool>true</bool> </property>
 
                     <widget class="QWidget" name="scrollAreaWidgetContents">
-                        <widget class="QPushButton" name="final_button">
-                            <property name="text">
-                                <string>Add</string>
-                            </property>
-                        </widget>
+                        <layout class="QGridLayout" name="gridLayout">
+                            <item row="0" column="0">
+                                <widget class="QPushButton" name="addVariantButton">
+                                    <property name="text">
+                                        <string> + Variant </string>
+                                    </property>
+                                    <property name="flat">
+                                        <bool>true</bool>
+                                    </property>
+                                    <property name="styleSheet">
+                                        <string>
+                                            QPushButton {
+                                                border: 1px dashed #999;
+                                                padding: 6px;
+                                            }
+                                            QPushButton:hover {
+                                                border-color: #666;
+                                            }
+                                        </string>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>
                     </widget>
                 </widget>
             </item>
@@ -115,6 +133,14 @@
                     </property>
                     <property name="styleSheet">
                         <string>color: red; font-style: italic;</string>
+                    </property>
+                </widget>
+            </item>
+
+            <item>
+                <widget class="QPushButton" name="add_button">
+                    <property name="text">
+                        <string>Add</string>
                     </property>
                 </widget>
             </item>

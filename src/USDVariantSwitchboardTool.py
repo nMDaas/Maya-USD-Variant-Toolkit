@@ -29,17 +29,22 @@ class USDVariantSwitchboardTool():
         ui.setWindowTitle(self.getToolName())
         ui.setObjectName(self.getToolName())
 
-        # scrollArea_newSwitch should by default
-        scrollArea_newSwitch = ui.findChild(QScrollArea, "scrollArea_newSwitch")
-        scrollArea_newSwitch.hide()
+        # scrollArea_newSwitch and add_button should by default
+        ui.scrollArea_newSwitch.hide()
+        ui.add_button.hide()
 
         #TODO: If no switches, should say that
 
         ui.addSwitchButton.clicked.connect(partial(self.createNewSwitch, ui))
 
     def createNewSwitch(self, ui):
+        # show options to create a new switch
         scrollArea_newSwitch = ui.findChild(QScrollArea, "scrollArea_newSwitch")
         scrollArea_newSwitch.show()
+        ui.add_button.show()
+
+        # hide '+ Variant Combination' button
+        ui.addSwitchButton.hide()
 
     # GETTERS ------------------------------------------------------------------------------
 
