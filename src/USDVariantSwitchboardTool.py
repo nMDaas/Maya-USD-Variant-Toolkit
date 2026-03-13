@@ -82,10 +82,16 @@ class USDVariantSwitchboardTool():
         vset_dropdown = QComboBox()
         vset_dropdown.addItems(self.prim_vsets_map[self.stage_prims[0]])
 
+        # Create variant dropdown widget
+        variant_dropdown = QComboBox()
+        key = self.stage_prims[0] + "/" + self.prim_vsets_map[self.stage_prims[0]][0]
+        variant_dropdown.addItems(self.vset_variants_map[key])
+
         # add it to the grid layout
         rowIndex = ui.gridLayout_newSwitch.rowCount()
         ui.gridLayout_newSwitch.addWidget(prim_dropdown, rowIndex, 0)
         ui.gridLayout_newSwitch.addWidget(vset_dropdown, rowIndex, 1)
+        ui.gridLayout_newSwitch.addWidget(variant_dropdown, rowIndex, 2)
 
     def get_stage_prims(self):
         self.stage_prims = []
