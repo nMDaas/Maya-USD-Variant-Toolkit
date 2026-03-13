@@ -23,10 +23,23 @@ import re
 class USDVariantSwitchboardTool():
     def __init__(self, _tool_name):
         self.tool_name = _tool_name
+        self.switches = [] # refers to existing variant combinations
 
     def setupUserInterface(self, ui):
         ui.setWindowTitle(self.getToolName())
         ui.setObjectName(self.getToolName())
+
+        # scrollArea_newSwitch should by default
+        scrollArea_newSwitch = ui.findChild(QScrollArea, "scrollArea_newSwitch")
+        scrollArea_newSwitch.hide()
+
+        #TODO: If no switches, should say that
+
+        ui.addSwitchButton.clicked.connect(partial(self.createNewSwitch, ui))
+
+    def createNewSwitch(self, ui):
+        scrollArea_newSwitch = ui.findChild(QScrollArea, "scrollArea_newSwitch")
+        scrollArea_newSwitch.show()
 
     # GETTERS ------------------------------------------------------------------------------
 

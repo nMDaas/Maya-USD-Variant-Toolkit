@@ -65,9 +65,9 @@
             </item>
 
             <item>
-                <widget class="QPushButton" name="addVariantButton">
+                <widget class="QPushButton" name="addSwitchButton">
                     <property name="text">
-                        <string> + Variant </string>
+                        <string> + Variant Combination </string>
                     </property>
                     <property name="flat">
                         <bool>true</bool>
