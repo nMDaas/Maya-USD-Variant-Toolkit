@@ -87,11 +87,48 @@ class USDVariantSwitchboardTool():
         key = self.stage_prims[0] + "/" + self.prim_vsets_map[self.stage_prims[0]][0]
         variant_dropdown.addItems(self.vset_variants_map[key])
 
-        # add it to the grid layout
+        # Get row index
         rowIndex = ui.gridLayout_newSwitch.rowCount()
+
+        # Setting object names
+        prim_dropdown.setObjectName(f"prim_dropdown_{rowIndex}")
+        vset_dropdown.setObjectName(f"vset_dropdown_{rowIndex}")
+        variant_dropdown.setObjectName(f"variant_dropdown_{rowIndex}")
+
+        # add it to the grid layout
         ui.gridLayout_newSwitch.addWidget(prim_dropdown, rowIndex, 0)
         ui.gridLayout_newSwitch.addWidget(vset_dropdown, rowIndex, 1)
         ui.gridLayout_newSwitch.addWidget(variant_dropdown, rowIndex, 2)
+
+        # Connect dropdowns to functions
+        prim_dropdown.currentTextChanged.connect(
+            lambda prim_selection: self.handle_prim_selection_change(ui, prim_selection, rowIndex)
+        )
+        vset_dropdown.currentTextChanged.connect(
+            lambda vset_selection: self.handle_vset_selection_change(ui, vset_selection, rowIndex)
+        )
+
+    def handle_prim_selection_change(self, ui, prim_selection, rowIndex):
+        # update vset_dropdown
+        vset_dropdown = ui.findChild(QComboBox, f"vset_dropdown_{rowIndex}")
+        vset_dropdown.clear()
+        vset_dropdown.addItems(self.prim_vsets_map[prim_selection])
+
+        # update variant_dropdown
+        variant_dropdown = ui.findChild(QComboBox, f"variant_dropdown_{rowIndex}")
+        variant_dropdown.clear()
+        key = prim_selection + "/" + self.prim_vsets_map[prim_selection][0]
+        variant_dropdown.addItems(self.vset_variants_map[key])
+
+    def handle_vset_selection_change(self, ui, vset_selection, rowIndex):
+        prim_dropdown = ui.findChild(QComboBox, f"prim_dropdown_{rowIndex}")
+        prim_selection = prim_dropdown.currentText()
+
+        # update variant_dropdown
+        variant_dropdown = ui.findChild(QComboBox, f"variant_dropdown_{rowIndex}")
+        variant_dropdown.clear()
+        key = prim_selection + "/" + vset_selection
+        variant_dropdown.addItems(self.vset_variants_map[key])
 
     def get_stage_prims(self):
         self.stage_prims = []
