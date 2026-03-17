@@ -39,15 +39,17 @@ In progress!
 
 
 ### Installation
-1. Download and unzip this repository in a location of your choosing.
-2. With a new Maya scene opened, open the Script Editor
-3. Click on 'File', and from the dropdown list, select 'Open Script'
-4. With the Load Script dialog opened, locate this repository in your file explorer (Windows) or finder (Mac)
-5. Click into the repository folder, and then select the install.py file
-6. Click 'Open'
-7. The install.py script will be loaded into the Script Editor. Click the blue run button (▶) to run the script
-8. Locate and select this repository folder
-9. Click 'Save' - NatashaUSDTools should be loaded into a shelf
+1. Download and unzip this repository in a location of your choosing
+2. Rename the unzipped folder to Maya-USD-Variant-Author-Toolkit
+3. With Maya opened, open the Script Editor
+4. Click on 'File', and from the dropdown list, select 'Open Script'
+5. With the Load Script dialog opened, locate the Maya-USD-Variant-Author-Toolkit folder
+6. Click into the folder, and then select the install.py file
+7. Click 'Open' - the install.py script will be loaded into the Script Editor
+8. Click the blue run button (▶) at the top of the Script Editor to run the script
+9. Once again, locate and select the Maya-USD-Variant-Author-Toolkit folder
+10. Click 'Save' - Maya-USD-Variant-Author-Toolkit should be loaded into a shelf
+
 
 ### Attributions
 - Folder icons created by kmg design - Flaticon
