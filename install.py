@@ -18,7 +18,7 @@ for icon in os.listdir(icon_folder):
     shutil.copy2(os.path.join(icon_folder, icon), maya_icon_folder)
 
 # Create a shelf if it doesn't exist --------------------------------------------------------------
-shelf_name = "NatashaUSDTools"
+shelf_name = "Maya_USD_Variant_Author_Toolkit"
 if not cmds.shelfLayout(shelf_name, exists=True):
     cmds.shelfLayout(shelf_name, parent="ShelfLayout")
 
