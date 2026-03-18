@@ -25,30 +25,30 @@ if not cmds.shelfLayout(shelf_name, exists=True):
 # Add buttons -------------------------------------------------------------------------------------
 import importlib
 
-# Add button for UsdFileVariantAuthor_exec_tool.py ------------------------------------------------
-import UsdFileVariantAuthor_exec_tool # your main script
+# Add button ModelVariantAuthor_exec_tool.py ----------------------------------------------------
+import ModelVariantAuthor_exec_tool # your main script
 
 # Remove button if it exists
 buttons = cmds.shelfLayout(shelf_name, q=True, ca=True) or []
 for btn in buttons:
-    if cmds.shelfButton(btn, q=True, label=True) == "Usd_File_Variant_Author":
+    if cmds.shelfButton(btn, q=True, label=True) == "Model_Variant_Author":
         cmds.deleteUI(btn)
 
 cmds.shelfButton(
     parent=shelf_name,
-    label="Usd_File_Variant_Author",
+    label="Model_Variant_Author",
     imageOverlayLabel="",
-    image="UsdFileVariant_AIcon.png",
+    image="ModelVariant_AIcon.png",
     command=f'''
 import sys
 tool_root = r"{tool_root}"
 if tool_root not in sys.path:
     sys.path.append(tool_root)
 
-import src.UsdFileVariantAuthor_exec_tool as tool
+import src.ModelVariantAuthor_exec_tool as tool
 tool.run()
 ''',
-    annotation="USD File Variant Manager",
+    annotation="Modeling Variant Manager",
     sourceType="Python"
 )
 
@@ -103,33 +103,6 @@ import src.MaterialVariantAuthor_exec_tool as tool
 tool.run()
 ''',
     annotation="Material Variant Manager",
-    sourceType="Python"
-)
-
-# Add button ModelVariantAuthor_exec_tool.py ----------------------------------------------------
-import ModelVariantAuthor_exec_tool # your main script
-
-# Remove button if it exists
-buttons = cmds.shelfLayout(shelf_name, q=True, ca=True) or []
-for btn in buttons:
-    if cmds.shelfButton(btn, q=True, label=True) == "Model_Variant_Author":
-        cmds.deleteUI(btn)
-
-cmds.shelfButton(
-    parent=shelf_name,
-    label="Model_Variant_Author",
-    imageOverlayLabel="",
-    image="ModelVariant_AIcon.png",
-    command=f'''
-import sys
-tool_root = r"{tool_root}"
-if tool_root not in sys.path:
-    sys.path.append(tool_root)
-
-import src.ModelVariantAuthor_exec_tool as tool
-tool.run()
-''',
-    annotation="Modeling Variant Manager",
     sourceType="Python"
 )
 
