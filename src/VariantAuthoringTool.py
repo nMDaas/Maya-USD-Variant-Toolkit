@@ -22,8 +22,6 @@ my_script_dir = "/Users/natashadaas/USD_Switchboard/src"
 if my_script_dir not in sys.path:
     sys.path.append(my_script_dir)
 
-from errorDialog_exec_tool import errorDialog_exec_tool
-
 # ------------------------------------------------------------------------------------------
 
 class VariantAuthoringTool(ABC):
@@ -59,16 +57,6 @@ class VariantAuthoringTool(ABC):
     def setupUserInterface(self, ui):
         ui.setWindowTitle(self.getToolName())
         ui.setObjectName(self.getToolName())
-
-        if self.targetPrim is None:
-            errorTitle = "Error: No Target Prim Selected"
-            errorMessage = """
-            A target prim of type Xform must be selected to create a variant set.
-            """
-            errorDialog_exec_tool(errorTitle, errorMessage)
-            return False
-
-        ui.targetPrim.setText(f"Target Prim: {self.getTargetPrimPath()}")
 
         # Set the icon for the variant set remove button
         ui.vs_remove.setIcon(QIcon(str(self.remove_icon)))

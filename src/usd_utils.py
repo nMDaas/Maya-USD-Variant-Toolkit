@@ -35,7 +35,7 @@ def get_selected_usd_xform_prim():
     prim = mayaUsd.ufe.ufePathToPrim(ufe_path_string)
 
     if not prim or not prim.IsValid():
-        errorTitle = "Error: No Target Prim Selected"
+        errorTitle = "Error: No Target Xform Prim Selected"
         errorMessage = """
         A target prim inside the USD Stage must be selected.
         """
