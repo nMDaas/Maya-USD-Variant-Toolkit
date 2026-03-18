@@ -46,9 +46,9 @@ def one_undo(func):
     return wrap
         
 #show gui window
-def showWindow(tool):
+def showWindow(tool, gui):
     # get this files location so we can find the .ui file in the /ui/ folder alongside it
-    UI_FILE = str(Path(__file__).parent.resolve() / "gui.ui")
+    UI_FILE = str(Path(__file__).parent.resolve() / gui)
     loader = QUiLoader()
     file = QFile(UI_FILE)
     file.open(QFile.ReadOnly)
@@ -84,19 +84,19 @@ def showWindow(tool):
 
 def executeUsdFileVariantAuthor():
     tool = UsdFileVariantAuthor("Manage USD File Variants on Target Prim")
-    window=showWindow(tool)
+    window=showWindow(tool, "gui.ui")
 
 def executeTransformVariantAuthor():
     tool = TransformVariantAuthor("Manage Transform Variants On Target Prim")
-    window=showWindow(tool)
+    window=showWindow(tool, "gui.ui")
 
 def executeMaterialVariantAuthor():
     tool = MaterialVariantAuthor("Manage Material Variants On Target Prim")
-    window=showWindow(tool)
+    window=showWindow(tool, "gui.ui")
 
 def executeModelVariantAuthor():
     tool = ModelVariantAuthor("Manage Modeling Variants on Target Prim")
-    window=showWindow(tool)
+    window=showWindow(tool, "geo_gui.ui")
 
 if __name__ == "__main__":
     executeWrapper()
