@@ -58,3 +58,4 @@ https://docs.google.com/document/d/1TuKM7230-BHzAjsKPTxb6etir7BXdzTmijqW81_N7Lw/
 - Folder icons created by kmg design - Flaticon
 - Files and folders icons created by Gajah Mada - Flaticon
 - Dirrection icons created by popcic - Flaticon
+- Warning icons created by Rakib Hassan Rahim - Flaticon
