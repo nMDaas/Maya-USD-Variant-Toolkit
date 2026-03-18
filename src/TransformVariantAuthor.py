@@ -43,6 +43,9 @@ class TransformVariantAuthor(VariantAuthoringTool):
     def setupUserInterface(self, ui):
         successful = super().setupUserInterface(ui)
 
+        #connect buttons to functions
+        ui.addVariantButton.clicked.connect(partial(self.add_variant_row, ui))
+
         if successful is False:
             return False
         else:

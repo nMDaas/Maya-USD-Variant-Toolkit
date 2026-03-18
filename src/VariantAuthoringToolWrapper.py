@@ -72,12 +72,6 @@ def showWindow(tool, gui):
 
     # Runs only if tool setup was successful
     if successful is not False:
-        def add_variant_row():
-            tool.add_variant_row(ui)
-
-        #connect buttons to functions
-        ui.addVariantButton.clicked.connect(add_variant_row)
-        
         # show the QT ui
         ui.show()
         return ui
