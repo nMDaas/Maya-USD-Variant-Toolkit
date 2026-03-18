@@ -22,7 +22,6 @@ my_script_dir = "/Users/natashadaas/USD_Switchboard/src"
 if my_script_dir not in sys.path:
     sys.path.append(my_script_dir)
 
-from usd_utils import get_selected_usd_xform_prim
 from errorDialog_exec_tool import errorDialog_exec_tool
 
 # ------------------------------------------------------------------------------------------
@@ -31,7 +30,6 @@ class VariantAuthoringTool(ABC):
     @abstractmethod
     def __init__(self, _tool_name):
         self.tool_name = _tool_name
-        self.targetPrim = get_selected_usd_xform_prim() # set targetPrim - the XForm that will have the variant
         self.proxy_shape_path = "|stage1|stageShape1"
         self.stage = mayaUsd.ufe.getStage(self.proxy_shape_path)
         
